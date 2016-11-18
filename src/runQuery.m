@@ -8,7 +8,7 @@ function runQuery(query, baseStr, targetFileName, blobSize, ...
 
 % Parameters
 % Threshold the base channel for computational simplicity
-baseThresh = 0.5;
+baseThresh = 0.01;
 
 maxObjThreshold = 0.7;
 maxSize = 500;
@@ -32,8 +32,12 @@ for n=1:length(presynapticVolumes)
     
     fileToLoad = strcat(baseStr, query.preIF{n});
     fprintf('loading %s ... \n', query.preIF{n});
-    load(fileToLoad); % load as probVol
+    load(fileToLoad); % load as rawVol
     fprintf('loaded %s \n', query.preIF{n});
+    
+    % compute foreground probablilites
+    % if mask is needed, replate -1 with mask volume
+    probVol = getProbMap(rawVol, -1);
     
     % remove large blobs
     disp('remove large objects');
@@ -69,8 +73,11 @@ for n=1:length(postsynapticVolumes)
     
     fileToLoad = strcat(baseStr, query.postIF{n});
     fprintf('loading %s ... \n', query.postIF{n});
-    load(fileToLoad); % load as probVol
+    load(fileToLoad); % load as rawVol
     fprintf('loaded %s \n', query.postIF{n});
+    
+    probVol = getProbMap(rawVol, -1);
+    
     
     % remove large blobs
     disp('remove large objects');
