@@ -2,15 +2,17 @@ import ndio
 import scipy.io as io
 import os
 import ndio.remote.neurodata as neurodata
-nd = neurodata()
-volumeList = ['kristina15'];
-#'Ex2R18C1', 'Ex2R18C2', 'Ex3R43C1', 'Ex3R43C2', 'Ex3R43C3', 'Ex6R15C1', 'Ex6R15C2', 'Ex10R55','Ex12R75', 'Ex12R76', 'Ex13R51', 
 
-# 
-baseStr = "/data/anish/Synaptome/kristina15/rawVolumes/";
-#baseStr = "/Users/anish/Documents/Connectome/Synaptome-Duke/ChessboardAnalysis/RW15_Synapse/utilities/raw/"; 
 
-folderStrBoolean = os.path.isdir(baseStr); 
+nd = neurodata(hostname='synaptomes.neurodata.io')
+volumeList = ['collman15v2'];
+#'Ex2R18C1', 'Ex2R18C2', 'Ex3R43C1', 'Ex3R43C2', 'Ex3R43C3', 'Ex6R15C1', 'Ex6R15C2', 'Ex10R55','Ex12R75', 'Ex12R76', 'Ex13R51',
+
+#
+#baseStr = "/data/anish/Synaptome/kristina15/rawVolumes/";
+baseStr = "/Users/anish/Documents/Connectome/Synaptome-Duke/";
+
+folderStrBoolean = os.path.isdir(baseStr);
 if (folderStrBoolean == False):
 	os.mkdir(baseStr)
 	print "Folder Created"
@@ -22,17 +24,17 @@ for token in volumeList:
 	print x_stop, y_stop, z_stop
 
 
-	# See if directory exists 
+	# See if directory exists
 	folderStr = baseStr + token + os.path.sep;
-	folderStrBoolean = os.path.isdir(folderStr); 
+	folderStrBoolean = os.path.isdir(folderStr);
 	if (folderStrBoolean == False):
 		os.mkdir(folderStr)
 		print "Folder Created"
 
 	print "Folder check completed"
-	tokenList = channels.keys(); 
+	tokenList = channels.keys();
 
-	z_pt = z_stop / 3; 
+	z_pt = z_stop / 3;
 
 	query = {
 	    'token': token,
@@ -48,49 +50,49 @@ for token in volumeList:
 
 	for x in xrange(0, len(tokenList)):
 
-	  c = tokenList[x] 
+	  c = tokenList[x]
 	  print "{}".format(c),
 	  print ""
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x; 
-	  fullFileName = folderStr + channelName + "_p1"; 
+	  print x;
+	  fullFileName = folderStr + channelName + "_p1";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
 	  print "file saved"
 
-	zpt2 = z_pt * 2; 
-	query['z_start'] = z_pt; 
-	query['z_stop'] = zpt2; 
+	zpt2 = z_pt * 2;
+	query['z_start'] = z_pt;
+	query['z_stop'] = zpt2;
 
 	for x in xrange(0, len(tokenList)):
 
-	  c = tokenList[x] 
+	  c = tokenList[x]
 	  print "{}".format(c),
 	  print ""
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x; 
-	  fullFileName = folderStr + channelName + "_p2"; 
+	  print x;
+	  fullFileName = folderStr + channelName + "_p2";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
 	  print "file saved"
 
-	query['z_start'] = zpt2; 
-	query['z_stop'] = z_stop; 
+	query['z_start'] = zpt2;
+	query['z_stop'] = z_stop;
 
 	for x in xrange(0, len(tokenList)):
 
-	  c = tokenList[x] 
+	  c = tokenList[x]
 	  print "{}".format(c),
 	  print ""
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x; 
-	  fullFileName = folderStr + channelName + "_p3"; 
+	  print x;
+	  fullFileName = folderStr + channelName + "_p3";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
 	  print "file saved"
@@ -98,4 +100,3 @@ for token in volumeList:
 
 
 	print("download completed")
-

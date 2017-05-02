@@ -1,5 +1,7 @@
 %% run synapse detection 
-addpath(genpath('/Users/anish/Documents/Connectome/probabilistic-synapse-detection/')); 
+
+% Change to be the path of the directory
+addpath(genpath('.../probabilistic-synapse-detection/')); 
 
 % Location of csv queries 
 queryFilename = 'sampleQueries.csv';
