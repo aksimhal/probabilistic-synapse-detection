@@ -1,12 +1,12 @@
 function aggregateDetections(gelatin)
 
+addpath(genpath('/home/anish/Connectome/Synaptome/Synaptome-Duke/SynapseDetection/')); 
+
 if (gelatin)
     inputNumbers = [1, 2, 3, 4, 5, 6, 7]; %Gelatin
 
 else
-    inputNumbers = [1, 3, 4,  6, 7]; %Silane
     inputNumbers = [1, 2, 3, 4, 6, 7]; %Silane
-
 end
 
 

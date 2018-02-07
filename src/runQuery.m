@@ -1,5 +1,5 @@
 %% Select proper format to run queries
-function runQuery(query, baseStr, targetFileName, blobSize, ...
+function runQuery(query, baseStr, outputfilename, maskFlag, blobSize, ...
     search_win, edge_win)
 % Load each channel
 % Convolve
@@ -8,10 +8,7 @@ function runQuery(query, baseStr, targetFileName, blobSize, ...
 
 % Parameters
 % Threshold the base channel for computational simplicity
-baseThresh = 0.01;
-
-maxObjThreshold = 0.7;
-maxSize = 500;
+baseThresh = 0.5;
 
 % minumum blob size
 convWindow = ones(blobSize, 1);
@@ -35,13 +32,18 @@ for n=1:length(presynapticVolumes)
     load(fileToLoad); % load as rawVol
     fprintf('loaded %s \n', query.preIF{n});
     
-    % compute foreground probablilites
-    % if mask is needed, replate -1 with mask volume
-    probVol = getProbMap(rawVol, -1);
-    
-    % remove large blobs
-    disp('remove large objects');
-    probVol = removeLargeBlobs(probVol, maxSize, maxObjThreshold);
+    %load mask
+    if maskFlag ~= -1
+        load(maskFlag);
+    else 
+        mask = -1;
+    end
+
+    % convert to prob space
+    probVol = getProbMap(rawVol, mask);
+    clear rawVol;
+    clear mask;
+
     
     % convolve volumes
     disp('Convolve volumes');
@@ -54,8 +56,8 @@ for n=1:length(presynapticVolumes)
         factorVol = computeFactor_2(convVol);
         convVol = convVol .* factorVol;
     elseif(query.preIF_z(n) == 3)
-        factorVol = computeFactor(convVol);
-        convVol = convVol .* factorVol;
+            factorVol = computeFactor(convVol);
+            convVol = convVol .* factorVol;
     end
     
     presynapticVolumes{n} = convVol;
@@ -73,15 +75,20 @@ for n=1:length(postsynapticVolumes)
     
     fileToLoad = strcat(baseStr, query.postIF{n});
     fprintf('loading %s ... \n', query.postIF{n});
-    load(fileToLoad); % load as rawVol
+    load(fileToLoad); % load as probVol
     fprintf('loaded %s \n', query.postIF{n});
     
-    probVol = getProbMap(rawVol, -1);
+    %load mask
+    if maskFlag ~= -1
+        load(maskFlag);
+    else 
+        mask = -1;
+    end    
     
-    
-    % remove large blobs
-    disp('remove large objects');
-    probVol = removeLargeBlobs(probVol, maxSize, maxObjThreshold);
+    % convert to prob space
+    probVol = getProbMap(rawVol, mask);
+    clear rawVol;
+    clear mask;
     
     % convolve volumes
     disp('Convolve volumes');
@@ -138,7 +145,7 @@ switch caseNum
 end
 
 fprintf('case %d completed \n', caseNum);
-save(targetFileName, 'resultVol', '-v7.3');
-disp(targetFileName);
+save(outputfilename, 'resultVol', '-v7.3');
+disp(outputfilename);
 
 end

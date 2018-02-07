@@ -1,36 +1,26 @@
 %% run synapse detection 
+% SYNAPTOME-Duke
 addpath(genpath('/home/anish/Connectome/Synaptome/Synaptome-Duke/SynapseDetection/')); 
 
 % Location of csv queries 
-queryFilename = 'conjugate_queries - silane.csv';
+queryFilename = 'cat_queries/conjugate_queries - silane.csv';
 
 % Location of data 
-baseStr = '/data/anish/Synaptome/silane/';
+dataLocation = '/data/anish/Synaptome/silane/rawVolumes/';
 
-% Foldername of data in probability space 
-inputFolder = 'probVolumes/prob_';
+%Location of Mask
+masklocation = '/data/anish/Synaptome/silane/silaneMask';
 
 % Output Foldername 
-outputFolder = 'results';
-
-% Create 'results' folder 
-targetFolder = strcat(baseStr, outputFolder);
-isdir_result = isdir(targetFolder);
-if ~isdir_result
-    mkdir(targetFolder);
-end
-
-dataLocation = strcat(baseStr, inputFolder); 
+outputFolder = '/data/anish/Synaptome/silane/results/';
 
 queryList = createQueries(queryFilename);
 
 % convolution window size 
-%blobSize = 101; %101*2.33mn
 
 blobSize = 87; 
 
 % search grid size
-%search_win = 126;
 search_win = 88;
 
 % edge buffer size
@@ -42,12 +32,14 @@ for n=1:length(queryList)
     fprintf('about to start query %d \n', n); 
     query = queryList{n}; 
     
-    targetFileName = strcat(targetFolder, filesep, 'resultVol_', num2str(n)); 
-    runQuery(query, dataLocation, targetFileName, blobSize, search_win, edge_win); 
-    
+    outputfilename = strcat(outputFolder, filesep, 'resultVol_', num2str(n)); 
+
+    runQuery(query, dataLocation, outputfilename, masklocation, blobSize, search_win, edge_win)
 end
 
-emailAnish('run_silane completed');
+
+disp('Complete');
+
 
 
 

@@ -15,13 +15,13 @@ baseStr = "/Users/anish/Documents/Connectome/Synaptome-Duke/";
 folderStrBoolean = os.path.isdir(baseStr);
 if (folderStrBoolean == False):
 	os.mkdir(baseStr)
-	print "Folder Created"
+	print("Folder Created")
 
 for token in volumeList:
-	print token
+	print(token)
 	channels = nd.get_channels(token)
 	x_stop, y_stop, z_stop = nd.get_image_size(token, resolution=0)
-	print x_stop, y_stop, z_stop
+	print(x_stop, y_stop, z_stop)
 
 
 	# See if directory exists
@@ -29,9 +29,9 @@ for token in volumeList:
 	folderStrBoolean = os.path.isdir(folderStr);
 	if (folderStrBoolean == False):
 		os.mkdir(folderStr)
-		print "Folder Created"
+		print("Folder Created")
 
-	print "Folder check completed"
+	print("Folder check completed")
 	tokenList = channels.keys();
 
 	z_pt = z_stop / 3;
@@ -51,16 +51,16 @@ for token in volumeList:
 	for x in xrange(0, len(tokenList)):
 
 	  c = tokenList[x]
-	  print "{}".format(c),
-	  print ""
+	  print("{}".format(c))
+	  print("")
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x;
+	  print(x);
 	  fullFileName = folderStr + channelName + "_p1";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
-	  print "file saved"
+	  print("file saved")
 
 	zpt2 = z_pt * 2;
 	query['z_start'] = z_pt;
@@ -69,16 +69,16 @@ for token in volumeList:
 	for x in xrange(0, len(tokenList)):
 
 	  c = tokenList[x]
-	  print "{}".format(c),
-	  print ""
+	  print("{}".format(c))
+	  print("")
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x;
+	  print(x);
 	  fullFileName = folderStr + channelName + "_p2";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
-	  print "file saved"
+	  print("file saved")
 
 	query['z_start'] = zpt2;
 	query['z_stop'] = z_stop;
@@ -86,16 +86,16 @@ for token in volumeList:
 	for x in xrange(0, len(tokenList)):
 
 	  c = tokenList[x]
-	  print "{}".format(c),
-	  print ""
+	  print("{}".format(c))
+	  print("")
 
 	  query['channel'] = c
 	  channelName = "{}".format(c)
-	  print x;
+	  print(x);
 	  fullFileName = folderStr + channelName + "_p3";
 	  cutout = nd.get_cutout(**query)
 	  io.savemat(fullFileName,{channelName:cutout})
-	  print "file saved"
+	  print("file saved")
 
 
 

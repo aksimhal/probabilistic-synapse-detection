@@ -2,9 +2,10 @@ function calculate_accuracy(silane, gaba, threshold, smallBlobWindow, label_win,
     trialNum)
 
 if (silane)
+    % These .mat files are needed for evaluation 
     filename = strcat('/data/anish/Synaptome/silane/results/resultVol_', num2str(trialNum));
-    load(filename);
-    load('/data/anish/Synaptome/silane/silaneMask.mat');
+    load(filename); 
+    load('/data/anish/Synaptome/silane/silaneMask.mat'); 
     load('/data/anish/Synaptome/silane/silaneLabels.mat');
     load('/data/anish/Synaptome/silane/isedge');
     load('/data/anish/Synaptome/silane/isgaba');
@@ -28,6 +29,12 @@ CC_labels = CC;
 % Define edge
 edge_win = 125;
 zedge = 1;
+
+
+% get mask 
+
+
+
 
 % Label all detections
 CC_detections = bwconncomp(resultVol > 0.01, 26);
