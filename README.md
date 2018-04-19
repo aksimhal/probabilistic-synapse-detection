@@ -1,5 +1,7 @@
 ## Readme for Probabilistic fluorescence-based synapse detection
 
+[note] I rewrote the method in python and it's the most current version of the codebase.  If you're interested in that, please visit <https://aksimhal.github.io/SynapseAnalysis/SynapseDetection>. 
+
 Thank you for visiting the paper's code repository.  Here, you'll find links to download the data and the necessary code needed to run the synapse detection code yourself.  
 
 If you'd like to explore the algorithm itself, run /runme/sample_runme/run_sample.m   This runme runs a few example queries on sample data (a tiny portion of data from Weiler et al, 2014) inlcuded in the repository.  
